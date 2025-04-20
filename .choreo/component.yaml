@@ -1,0 +1,100 @@
+# .choreo/component-config.yaml
+version: 0.1
+kind: Component
+metadata:
+  # Name of the component in Choreo. Use lowercase alphanumeric and hyphens.
+  name: asgardeo-ai-agent
+spec:
+  # Type of the component - Service indicates a long-running network service (like an API)
+  type: Service
+  # The runtime language
+  runtime: Python
+  # Build configuration - Assuming Python Buildpacks
+  build:
+    # Specifies using Cloud Native Buildpacks (common for Python in Choreo)
+    # Buildpacks automatically detect requirements.txt and Procfile
+    builder: CloudNative
+    # If you have specific buildpack settings, add them here. Usually not needed for standard Python.
+  # Network configuration for exposing the service
+  network:
+    # Visibility defines how the service is exposed. 'External' makes it publicly accessible.
+    # Use 'Project' if only internal Choreo components need to access it.
+    visibility: External
+    # Ports exposed by the component's container
+    ports:
+      - name: http # Logical name for the port
+        # The port your application listens on INSIDE the container.
+        # Should match the $PORT used in your Procfile (Gunicorn/Uvicorn).
+        port: 8000 # Default for many Python frameworks, but Choreo sets $PORT
+        # Protocol used on this port
+        protocol: HTTP
+  # Environment variables needed by the application
+  # Use Choreo Configs (for non-sensitive) and Secrets (for sensitive)
+  env:
+    # --- Secrets (Reference Choreo Secrets) ---
+    # The name here should match the Secret Name created in Choreo
+    - name: AZURE_OPENAI_API_KEY
+      secretRef:
+        name: azure-openai-secrets # Example Choreo secret name
+        key: api_key              # Key within the Choreo secret holding the value
+    - name: AZURE_OPENAI_ENDPOINT
+      secretRef:
+        name: azure-openai-secrets
+        key: endpoint
+    - name: AZURE_OPENAI_DEPLOYMENT_NAME
+      secretRef:
+        name: azure-openai-secrets
+        key: deployment_name
+    - name: AZURE_OPENAI_API_VERSION
+      secretRef:
+        name: azure-openai-secrets
+        key: api_version
+
+    # --- ConfigMaps (Reference Choreo ConfigMaps or provide default values) ---
+    # The name here should match the ConfigMap Name created in Choreo or provide value
+    - name: ASGARDEO_BASE_URL
+      configMapRef:
+        name: asgardeo-config # Example Choreo ConfigMap name
+        key: base_url         # Key within the ConfigMap holding the value
+      # Or provide a default value directly:
+      # value: "https://api.asgardeo.io/t/"
+    - name: MAX_CHAT_HISTORY
+      value: "10" # Default value, can be overridden by a ConfigMap
+
+    # --- Choreo Provided Variables (No need to define here usually) ---
+    # - name: PORT # Choreo injects this automatically for the container
+
+  # Health checks for Kubernetes/Choreo to monitor the application
+  healthChecks:
+    # Readiness probe: Checks if the application is ready to accept traffic
+    readiness:
+      # Type of probe: HTTP GET request
+      httpGet:
+        # Path of the health check endpoint
+        path: /health
+        # Port to use for the check (matches the container port)
+        port: 8000
+      # Initial delay before starting probes
+      initialDelaySeconds: 10
+      # How often to perform the check
+      periodSeconds: 15
+      # How long to wait for a response
+      timeoutSeconds: 5
+      # Number of consecutive failures before marking as Unready
+      failureThreshold: 3
+    # Liveness probe: Checks if the application is still running/alive
+    liveness:
+      # Type of probe: HTTP GET request
+      httpGet:
+        # Path of the health check endpoint
+        path: /health
+        # Port to use for the check
+        port: 8000
+      # Initial delay before starting probes (usually longer than readiness)
+      initialDelaySeconds: 20
+      # How often to perform the check
+      periodSeconds: 20
+      # How long to wait for a response
+      timeoutSeconds: 5
+      # Number of consecutive failures before restarting the container
+      failureThreshold: 3
