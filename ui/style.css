@@ -1,0 +1,183 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px; /* Adjust max width as needed */
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* --- Config Section --- */
+.config-section {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+.config-section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Label takes auto width, input takes rest */
+    gap: 10px;
+    align-items: center;
+}
+
+.config-grid label {
+    font-weight: bold;
+    color: #444;
+    text-align: right;
+}
+
+.config-grid input[type="text"],
+.config-grid input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.info {
+    font-size: 0.8em;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+
+/* --- Chat Area --- */
+.chat-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow chat container to grow */
+    overflow: hidden; /* Contain chatbox scrolling */
+     min-height: 400px; /* Ensure a minimum height */
+}
+
+.chatbox {
+    flex-grow: 1;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    min-height: 300px; /* Minimum height for message area */
+    display: flex;
+    flex-direction: column; /* Stack messages vertically */
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    line-height: 1.4;
+    word-wrap: break-word; /* Ensure long words break */
+}
+
+.message.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end; /* Align user messages to the right */
+    border-bottom-right-radius: 5px; /* Slight visual tweak */
+}
+
+.message.agent {
+    background-color: #e9e9eb;
+    color: #333;
+    align-self: flex-start; /* Align agent messages to the left */
+    border-bottom-left-radius: 5px; /* Slight visual tweak */
+}
+.message.agent strong, .message.agent b {
+    color: #111; /* Make bold text slightly darker */
+}
+
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    align-self: flex-start;
+    width: auto; /* Let error message width adjust */
+    max-width: 95%;
+}
+
+.message.loading {
+    font-style: italic;
+    color: #666;
+    align-self: flex-start;
+    background-color: transparent;
+}
+
+
+/* --- Input Area --- */
+.input-area {
+    display: flex;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-top: 1px solid #ddd; /* Separator */
+}
+
+#userInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: none; /* Disable manual resizing */
+    margin-right: 10px;
+    font-size: 1em;
+    height: 50px; /* Adjust initial height */
+    box-sizing: border-box;
+}
+
+#sendButton {
+    padding: 0 20px; /* Adjust padding */
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+#sendButton:hover {
+    background-color: #218838;
+}
+#sendButton:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
