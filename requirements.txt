@@ -1,0 +1,10 @@
+fastapi~=0.115.12
+uvicorn[standard]~=0.34.2
+pydantic~=2.11.3
+python-dotenv~=1.1.0
+langchain~=0.3.23
+langchain_openai # Or langchain_google_genai, etc. depending on your LLM
+# Add any other libraries needed by your specific tools (e.g., boto3 for AWS, azure-identity for Azure)
+requests~=2.32.3
+langchain-core~=0.3.54
+langchain-openai~=0.3.14
